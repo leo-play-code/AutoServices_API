@@ -20,6 +20,10 @@ const FormDataSchema = new mongoose.Schema(
                     ref:"User"
                 }, 
                 comments: String,
+                edit:{
+                    type:Boolean,
+                    default:false
+                },
                 createTime:{
                     type: Date,
                     default: Date.now

@@ -49,9 +49,9 @@ export const updateform = async(req,res)=>{
     }
 }
 
-export const updateformcomments = async(req,res)=>{
+export const createformcomments = async(req,res)=>{
     try {
-        const {id} = req.params
+        const {id} = req.params;
         const data = req.body;
         const form = await FormData.findOne({_id:id});
 
@@ -63,6 +63,33 @@ export const updateformcomments = async(req,res)=>{
         res.status(404).json({error:error.message})
     }
 }
+export const updateformcomments = async(req,res)=>{
+    try {
+        const {id,commentid} = req.params;
+        const data = req.body;
+        const form = await FormData.findOne({_id:id});
+    } catch (error) {
+        res.status(404).json({error:error.message})
+    }
+}
+
+
+export const refreshformcomments = async(req,res)=>{
+    try {
+        const {id} = req.params;
+        const data = req.body;
+        const form = await FormData.findOne({_id:id});
+
+        form.comments = data;
+        await form.save();
+        
+        const formlist = await FormData.find().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        res.status(201).json(formlist);
+    } catch (error) {
+        res.status(404).json({error:error.message})   
+    }
+}
+
 
 export const getform = async(req,res)=>{
     try {
