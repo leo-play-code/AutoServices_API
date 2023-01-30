@@ -13,11 +13,12 @@ import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import formmodelRoutes from "./routes/formmodels.js";
 import FormModel from "./models/FormModel.js";
+import ForData from "./models/FormData.js";
 import formdataRoutes from "./routes/formdatas.js";
 
 
 import User from "./models/User.js";
-import {formmodel} from "./data/index.js";
+import {GetFormData} from "./data/index.js";
 
 // image upload ckeditor
 import  multiparty  from 'connect-multiparty';
@@ -95,14 +96,33 @@ app.use("/formmodel",formmodelRoutes)
 /* MOGOOSE SETUP */
 const PORT = process.env.PORT || 6003;
 mongoose.set("strictQuery", true);
-mongoose.connect(process.env.MONGO_URL,{
-    useNewUrlParser:true,
-    useUnifiedTopology:true,
-}).then(()=>{
-    app.listen(PORT,() => console.log(`Server Port: ${PORT}`));
-    /* ADD DATA ONE TIME */
-    // FormModel.insertMany(formmodel)
-    // User.insertMany(users);
-    // Post.insertMany(posts);
-}).catch((error) => console.log(`${error} did not connect`))
 
+// mongoose.connect(process.env.MONGO_URL,{
+//     useNewUrlParser:true,
+//     useUnifiedTopology:true,
+// }).then(()=>{
+//     app.listen(PORT,() => console.log(`Server Port: ${PORT}`));
+//     /* ADD DATA ONE TIME */
+
+   
+//     // User.insertMany(users);
+//     // Post.insertMany(posts);
+// }).catch((error) => console.log(`${error} did not connect`))
+
+
+const connectDB = async()=>{
+    try {
+        await mongoose.connect(process.env.MONGO_URL,{
+            useNewUrlParser:true,
+            useUnifiedTopology:true,
+        })
+        const formdata =  await GetFormData()
+        ForData.insertMany(formdata)
+
+        console.log(`Server Port: ${PORT}`);
+    } catch (err) {
+        console.log(`${err} did not connect`)
+    }
+}
+
+connectDB()

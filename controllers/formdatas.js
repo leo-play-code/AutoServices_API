@@ -6,6 +6,8 @@ import User from "../models/User.js";
 export const createform = async(req,res)=>{
     try {
         const {userid,formmodelid} = req.params;
+        const formall = await FormData.find()
+        console.log(formall)
         const data = req.body;
         const form = formmodelid;
         const creator = userid;
@@ -101,6 +103,8 @@ export const getform = async(req,res)=>{
 
 export const getallform = async(req,res)=>{
     try {
+        const formall = await FormData.find()
+        console.log(formall)
         const formlist = await FormData.find().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         res.status(201).json(formlist)
     } catch (error) {

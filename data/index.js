@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-
-
+import { getData } from './fomdata.js';
 
 
 
@@ -36,6 +35,13 @@ import mongoose from "mongoose";
 //         }
 //     }
 // ]
+
+
+
+export const GetFormData = async() =>{
+    const resp = await getData('1lz5_74N477kQLJsv80-k98mV5m9t-6f7PirnM3XRH5k', '131297436');
+    return resp
+}
 
 export const formmodel = [
     {
