@@ -97,32 +97,32 @@ app.use("/formmodel",formmodelRoutes)
 const PORT = process.env.PORT || 6003;
 mongoose.set("strictQuery", true);
 
-// mongoose.connect(process.env.MONGO_URL,{
-//     useNewUrlParser:true,
-//     useUnifiedTopology:true,
-// }).then(()=>{
-//     app.listen(PORT,() => console.log(`Server Port: ${PORT}`));
-//     /* ADD DATA ONE TIME */
+mongoose.connect(process.env.MONGO_URL,{
+    useNewUrlParser:true,
+    useUnifiedTopology:true,
+}).then(()=>{
+    app.listen(PORT,() => console.log(`Server Port: ${PORT}`));
+    /* ADD DATA ONE TIME */
 
    
-//     // User.insertMany(users);
-//     // Post.insertMany(posts);
-// }).catch((error) => console.log(`${error} did not connect`))
+    // User.insertMany(users);
+    // Post.insertMany(posts);
+}).catch((error) => console.log(`${error} did not connect`))
 
 
-const connectDB = async()=>{
-    try {
-        await mongoose.connect(process.env.MONGO_URL,{
-            useNewUrlParser:true,
-            useUnifiedTopology:true,
-        })
-        const formdata =  await GetFormData()
-        ForData.insertMany(formdata)
+// const connectDB = async()=>{
+//     try {
+//         await mongoose.connect(process.env.MONGO_URL,{
+//             useNewUrlParser:true,
+//             useUnifiedTopology:true,
+//         })
+//         const formdata =  await GetFormData()
+//         ForData.insertMany(formdata)
 
-        console.log(`Server Port: ${PORT}`);
-    } catch (err) {
-        console.log(`${err} did not connect`)
-    }
-}
+//         console.log(`Server Port: ${PORT}`);
+//     } catch (err) {
+//         console.log(`${err} did not connect`)
+//     }
+// }
 
-connectDB()
+// connectDB()
