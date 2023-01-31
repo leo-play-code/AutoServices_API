@@ -24,7 +24,8 @@ export const updatesetting = async(req,res)=>{
 
 export const getAllUser = async(req,res)=>{
     try {
-        const UserList = await User.find({allow:true}).sort({name:'asc'});
+        // const UserList = await User.find({allow:true}).sort({name:'asc'});
+        const UserList = await User.find().sort({name:'asc'});
         res.status(201).json(UserList)
     } catch (error) {
         res.status(404).json({error:error.message})   
