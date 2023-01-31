@@ -18,7 +18,7 @@ import formdataRoutes from "./routes/formdatas.js";
 
 
 import User from "./models/User.js";
-import {GetFormData} from "./data/index.js";
+// import {GetFormData} from "./data/index.js";
 
 // image upload ckeditor
 import  multiparty  from 'connect-multiparty';
