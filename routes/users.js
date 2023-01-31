@@ -1,8 +1,8 @@
 import express from "express";
 import {
-    getUser,
-    updatesetting,
-    getAllUser
+    GetOne,
+    UpdateSetting,
+    GetAll
 } from "../controllers/users.js";
 
 import { verifyToken } from "../middleware/auth.js";
@@ -10,8 +10,8 @@ import { verifyToken } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get("/:id",verifyToken,getUser);
-router.post("/:id/updatesetting",verifyToken,updatesetting);
-router.get("/get/alluser",verifyToken,getAllUser);
+router.get("/GetOne/:id",verifyToken,GetOne);
+router.get("/GetAll",verifyToken,GetAll);
+router.post("/UpdateSetting/:id",verifyToken,UpdateSetting);
 
 export default router;

@@ -1,27 +1,38 @@
 import express from "express";
 import {
-    createform,
-    deleteform,
-    updateform,
-    getform,
-    getallform,
-    createformcomments,
-    getmyformdata,
-    refreshformcomments,
+    Create,
+    Delete,
+    Update,
+    GetOne,
+    GetAll,
+    GetFormModelAll,
+    CreateComment,
+    GetUserAll,
+    UpdateComment,
+    
 } from "../controllers/formdatas.js"
 import { verifyToken } from '../middleware/auth.js';
 
 
 const router = express.Router();
+router.get("/GetAll",verifyToken,GetAll);
+router.get("/GetFormModelAll/:formid",verifyToken,GetFormModelAll);
+router.get("/GetOne/:id",verifyToken,GetOne);
+router.get("/GetUserAll/:userid",verifyToken,GetUserAll);
 
-router.patch("/create/:userid/:formmodelid",verifyToken,createform);
-router.delete("/delete/:id",verifyToken,deleteform);
-router.post("/createformcomments/:id",verifyToken,createformcomments);
-router.post("/refreshformcomments/:id",verifyToken,refreshformcomments);
-router.get("/get/:id",verifyToken,getform);
-router.get("/getall",verifyToken,getallform);
-router.get("/getmyformdata/:userid",verifyToken,getmyformdata);
-router.patch("/update/:userid/:formdataid",verifyToken,updateform);
+router.post("/CreateComment/:id",verifyToken,CreateComment);
+router.post("/UpdateComment/:id",verifyToken,UpdateComment);
+
+router.patch("/Create/:userid/:formmodelid",verifyToken,Create);
+router.patch("/Update/:userid/:formdataid",verifyToken,Update);
+
+router.delete("/Delete/:id",verifyToken,Delete);
+
+
+
+
+
+
 
 
 export default router;

@@ -1,13 +1,10 @@
-import jwt from "jsonwebtoken";
 import FormData from "../models/FormData.js";
 import FormModel from "../models/FormModel.js";
 import User from "../models/User.js";
 
-export const createform = async(req,res)=>{
+export const Create = async(req,res)=>{
     try {
         const {userid,formmodelid} = req.params;
-        const formall = await FormData.find()
-        console.log(formall)
         const data = req.body;
         const form = formmodelid;
         const creator = userid;
@@ -25,7 +22,7 @@ export const createform = async(req,res)=>{
     }
 }
 
-export const deleteform = async(req,res)=>{
+export const Delete = async(req,res)=>{
     try {
         const {id} = req.params;
         const formdata = await FormData.findOne({_id:id});
@@ -37,7 +34,7 @@ export const deleteform = async(req,res)=>{
     }
 }
 
-export const updateform = async(req,res)=>{
+export const Update = async(req,res)=>{
     try { 
         const {userid,formdataid} = req.params;
         const data = req.body;
@@ -51,7 +48,7 @@ export const updateform = async(req,res)=>{
     }
 }
 
-export const createformcomments = async(req,res)=>{
+export const CreateComment = async(req,res)=>{
     try {
         const {id} = req.params;
         const data = req.body;
@@ -65,26 +62,16 @@ export const createformcomments = async(req,res)=>{
         res.status(404).json({error:error.message})
     }
 }
-export const updateformcomments = async(req,res)=>{
-    try {
-        const {id,commentid} = req.params;
-        const data = req.body;
-        const form = await FormData.findOne({_id:id});
-    } catch (error) {
-        res.status(404).json({error:error.message})
-    }
-}
 
 
-export const refreshformcomments = async(req,res)=>{
+
+export const UpdateComment = async(req,res)=>{
     try {
         const {id} = req.params;
         const data = req.body;
         const form = await FormData.findOne({_id:id});
-
         form.comments = data;
         await form.save();
-        
         const formlist = await FormData.find().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         res.status(201).json(formlist);
     } catch (error) {
@@ -93,26 +80,39 @@ export const refreshformcomments = async(req,res)=>{
 }
 
 
-export const getform = async(req,res)=>{
+
+
+export const GetOne = async(req,res)=>{
     try {
-        
+        const {id} = req.params;
+        const formdata = await FormData.findOne({_id:id});
+        res.status(201).json(formdata);
     } catch (error) {
         res.status(404).json({error:error.message})
     }
 }
 
-export const getallform = async(req,res)=>{
+export const GetAll = async(req,res)=>{
     try {
         const formall = await FormData.find()
-        console.log(formall)
         const formlist = await FormData.find().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         res.status(201).json(formlist)
     } catch (error) {
         res.status(404).json({error:error.message})
     }
 }
-
-export const getmyformdata = async(req,res)=>{
+export const GetFormModelAll = async(req,res)=>{
+    try {
+        const {formid} = req.params;
+        const form = await FormModel.findOne({_id:formid});
+        const myformlist = await FormData.find({form:form}).sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        res.status(201).json(myformlist)
+        
+    } catch (error) {
+        res.status(404).json({error:error.message})
+    }
+}
+export const GetUserAll = async(req,res)=>{
     try {
         const {userid} = req.params;
         const user = await User.findOne({_id:userid});

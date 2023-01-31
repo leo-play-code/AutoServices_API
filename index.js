@@ -18,7 +18,7 @@ import formdataRoutes from "./routes/formdatas.js";
 
 
 import User from "./models/User.js";
-// import {GetFormData} from "./data/index.js";
+import {GetFormData} from "./data/index.js";
 
 // image upload ckeditor
 import  multiparty  from 'connect-multiparty';
@@ -116,7 +116,18 @@ mongoose.connect(process.env.MONGO_URL,{
 //             useUnifiedTopology:true,
 //         })
 //         const formdata =  await GetFormData()
-//         ForData.insertMany(formdata)
+//         var templist = []
+//         for (const num in formdata){
+//             templist.push(formdata[num])
+//             if (templist.length >990){
+//                 ForData.insertMany(templist)
+//                 templist = []
+//             }
+//         }
+//         if (templist.length>0){
+//             ForData.insertMany(templist)
+//         }
+        
 
 //         console.log(`Server Port: ${PORT}`);
 //     } catch (err) {

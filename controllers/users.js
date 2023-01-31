@@ -1,6 +1,6 @@
 import User from "../models/User.js";
 
-export const getUser = async(req,res)=>{
+export const GetOne = async(req,res)=>{
     try {
         const {id} = req.params;
         const user = await User.findById(id);
@@ -10,7 +10,7 @@ export const getUser = async(req,res)=>{
     }
 }
 
-export const updatesetting = async(req,res)=>{
+export const UpdateSetting = async(req,res)=>{
     try {
         const {id} = req.params;
         const user = await User.findById(id);
@@ -22,7 +22,7 @@ export const updatesetting = async(req,res)=>{
     }
 }
 
-export const getAllUser = async(req,res)=>{
+export const GetAll = async(req,res)=>{
     try {
         // const UserList = await User.find({allow:true}).sort({name:'asc'});
         const UserList = await User.find().sort({name:'asc'});

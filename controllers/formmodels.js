@@ -4,7 +4,7 @@ import FormModel from "../models/FormModel.js";
 
 
 // new form method
-export const createformmodel = async(req,res)=>{
+export const Create = async(req,res)=>{
     try {
         const {
             name,
@@ -23,7 +23,7 @@ export const createformmodel = async(req,res)=>{
     }
 }
 
-export const deleteformmodel = async(req,res)=>{
+export const Delete = async(req,res)=>{
     try {
         
     } catch (error) {
@@ -31,7 +31,7 @@ export const deleteformmodel = async(req,res)=>{
     }
 }
 
-export const updateformmodel = async(req,res)=>{
+export const Update = async(req,res)=>{
     try {
         const {formname} = req.params;
         const formmodel = await FormModel.findOne({name:formname});
@@ -45,7 +45,7 @@ export const updateformmodel = async(req,res)=>{
     }
 }
 
-export const getallformmodel = async(req,res)=>{
+export const GetAll = async(req,res)=>{
     try {
         const formmodellist = await FormModel.find();
         res.status(200).json(formmodellist);
@@ -55,7 +55,7 @@ export const getallformmodel = async(req,res)=>{
 }
 
 
-export const getformmodel = async(req,res)=>{
+export const GetOne = async(req,res)=>{
     try {
         const {formname} = req.params;
         const formmodel = await FormModel.findOne({name:formname});
