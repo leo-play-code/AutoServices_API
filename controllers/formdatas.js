@@ -2,6 +2,7 @@ import FormData from "../models/FormData.js";
 import FormModel from "../models/FormModel.js";
 import User from "../models/User.js";
 
+
 export const Create = async(req,res)=>{
     try {
         const {userid,formmodelid} = req.params;
@@ -17,7 +18,6 @@ export const Create = async(req,res)=>{
         const returnform = await FormData.findOne({_id:newformdata['_id']}).lean().populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         res.status(201).json(returnform);
         // const formlist = await FormData.find().lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
-        res.status(201).json(newformdata);
 
     } catch (error) {
         res.status(404).json({error:error.message})
@@ -98,9 +98,21 @@ export const GetOne = async(req,res)=>{
     }
 }
 
+export const GetFormModelPart = async(req,res) =>{
+    try {
+        const {formid,number} = req.params;
+        const form = await FormModel.findOne({_id:formid});
+        const myformlist = await FormData.find({form:form}).lean().sort([['createdAt', -1]]).limit(number).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        res.status(201).json(myformlist)
+    } catch (error) {
+        res.status(404).json({error:error.message})   
+    }
+}
+
+
 export const GetAll = async(req,res)=>{
     try {
-        const formall = await FormData.find()
+        // const formall = await FormData.find()
         const formlist = await FormData.find().lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         res.status(201).json(formlist)
     } catch (error) {
@@ -129,4 +141,15 @@ export const GetUserAll = async(req,res)=>{
         res.status(404).json({error:error.message})
     }
 }
+
+export const GetFormDataCount = async(req,res)=>{
+    try {
+        const {id} = req.params;
+        const count = await FormData.countDocuments({form:id})
+        res.status(201).json({"count":count})
+    } catch (error) {
+        res.status(404).json({error:error.message})
+    }
+}
+
 

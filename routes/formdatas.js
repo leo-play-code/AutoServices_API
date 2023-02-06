@@ -9,6 +9,8 @@ import {
     CreateComment,
     GetUserAll,
     UpdateComment,
+    GetFormDataCount,
+    GetFormModelPart
     
 } from "../controllers/formdatas.js"
 import { verifyToken } from '../middleware/auth.js';
@@ -19,6 +21,9 @@ router.get("/GetAll",verifyToken,GetAll);
 router.get("/GetFormModelAll/:formid",verifyToken,GetFormModelAll);
 router.get("/GetOne/:id",verifyToken,GetOne);
 router.get("/GetUserAll/:userid",verifyToken,GetUserAll);
+router.get("/GetFormModel/FormData/count/:id",verifyToken,GetFormDataCount);
+router.get("/GetFormModelPart/:formid/:number",verifyToken,GetFormModelPart);
+
 
 router.post("/CreateComment/:id",verifyToken,CreateComment);
 router.post("/UpdateComment/:id",verifyToken,UpdateComment);
