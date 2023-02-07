@@ -35,7 +35,7 @@ export const Delete = async(req,res)=>{
 export const Update = async(req,res)=>{
     try {
         const {formname} = req.params;
-        const formmodel = await FormModel.findOne({name:formname}).lean();
+        const formmodel = await FormModel.findOne({name:formname});
         if(!formmodel) return res.status(400).json({msg:"formmodel doesn't have dictdata ."});
         formmodel.selectdata = req.body['selectdata']
         formmodel.schema = req.body['schema']
