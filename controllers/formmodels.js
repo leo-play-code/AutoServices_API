@@ -1,3 +1,4 @@
+import FormData from "../models/FormData.js";
 import FormModel from "../models/FormModel.js";
 
 
@@ -48,6 +49,9 @@ export const Update = async(req,res)=>{
 export const GetAll = async(req,res)=>{
     try {
         const formmodellist = await FormModel.find().lean();
+        for (const num in formmodellist){
+            formmodellist[num]['count']=await FormData.countDocuments({form:formmodellist[num]['_id']})
+        }
         res.status(200).json(formmodellist);
     } catch (error) {
         res.status(404).json({error:error.message})
