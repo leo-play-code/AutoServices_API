@@ -34,7 +34,7 @@ export const Delete = async(req,res)=>{
 export const Update = async(req,res)=>{
     try {
         const {formname} = req.params;
-        const formmodel = await FormModel.findOne({name:formname});
+        const formmodel = await FormModel.findOne({name:formname}).lean();
         if(!formmodel) return res.status(400).json({msg:"formmodel doesn't have dictdata ."});
         formmodel.selectdata = req.body['selectdata']
         formmodel.schema = req.body['schema']
@@ -47,7 +47,7 @@ export const Update = async(req,res)=>{
 
 export const GetAll = async(req,res)=>{
     try {
-        const formmodellist = await FormModel.find();
+        const formmodellist = await FormModel.find().lean();
         res.status(200).json(formmodellist);
     } catch (error) {
         res.status(404).json({error:error.message})
@@ -58,7 +58,7 @@ export const GetAll = async(req,res)=>{
 export const GetOne = async(req,res)=>{
     try {
         const {formname} = req.params;
-        const formmodel = await FormModel.findOne({name:formname});
+        const formmodel = await FormModel.findOne({name:formname}).lean();
         if(!formmodel) return res.status(400).json({msg:"formmodel doesn't have dictdata ."});
         res.status(200).json(formmodel);
     } catch (error) {

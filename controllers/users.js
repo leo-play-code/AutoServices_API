@@ -3,7 +3,7 @@ import User from "../models/User.js";
 export const GetOne = async(req,res)=>{
     try {
         const {id} = req.params;
-        const user = await User.findById(id);
+        const user = await User.findById(id).lean();
         res.status(200).json(user)
     } catch (error) {
         res.status(404).json({message:error.message});   
@@ -13,7 +13,7 @@ export const GetOne = async(req,res)=>{
 export const UpdateSetting = async(req,res)=>{
     try {
         const {id} = req.params;
-        const user = await User.findById(id);
+        const user = await User.findById(id).lean();
         user.setting = req.body;
         user.save();
         res.status(201).json(user)
@@ -25,7 +25,7 @@ export const UpdateSetting = async(req,res)=>{
 export const GetAll = async(req,res)=>{
     try {
         // const UserList = await User.find({allow:true}).sort({name:'asc'});
-        const UserList = await User.find().sort({name:'asc'});
+        const UserList = await User.find().sort({name:'asc'}).lean();
         res.status(201).json(UserList)
     } catch (error) {
         res.status(404).json({error:error.message})   
