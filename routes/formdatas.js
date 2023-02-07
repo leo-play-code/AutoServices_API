@@ -22,7 +22,7 @@ router.get("/GetFormModelAll/:formid",verifyToken,GetFormModelAll);
 router.get("/GetOne/:id",verifyToken,GetOne);
 router.get("/GetUserAll/:userid",verifyToken,GetUserAll);
 router.get("/GetFormModel/FormData/count/:id",verifyToken,GetFormDataCount);
-router.get("/GetFormModelPart/:formid/:number",verifyToken,GetFormModelPart);
+router.get("/GetFormModelPart/:formid/:skip/:limit",verifyToken,GetFormModelPart);
 
 
 router.post("/CreateComment/:id",verifyToken,CreateComment);

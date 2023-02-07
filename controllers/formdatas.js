@@ -100,9 +100,9 @@ export const GetOne = async(req,res)=>{
 
 export const GetFormModelPart = async(req,res) =>{
     try {
-        const {formid,number} = req.params;
+        const {formid,skip,limit} = req.params;
         const form = await FormModel.findOne({_id:formid});
-        const myformlist = await FormData.find({form:form}).lean().sort([['createdAt', -1]]).limit(number).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        const myformlist = await FormData.find({form:form}).lean().sort([['createdAt', -1]]).skip(skip).limit(limit).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         res.status(201).json(myformlist)
     } catch (error) {
         res.status(404).json({error:error.message})   
