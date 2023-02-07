@@ -4,6 +4,7 @@ import User from "../models/User.js";
 /* LOGGING IN */
 export const login = async(req,res) =>{
     try {
+        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {email} = req.body;
         const user = await User.findOne({email:email})
         if (!user) return res.status(400).json({msg:"User does have permission. "});
@@ -17,6 +18,7 @@ export const login = async(req,res) =>{
 
 export const register = async(req,res)=>{
     try {
+        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {
             Name,
             email,

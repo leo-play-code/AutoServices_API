@@ -7,6 +7,7 @@ import FormModel from "../models/FormModel.js";
 // new form method
 export const Create = async(req,res)=>{
     try {
+        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {
             name,
             selectdata,
@@ -26,7 +27,7 @@ export const Create = async(req,res)=>{
 
 export const Delete = async(req,res)=>{
     try {
-        
+        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
     } catch (error) {
         res.status(404).json({error:error.message})
     }
@@ -34,6 +35,7 @@ export const Delete = async(req,res)=>{
 
 export const Update = async(req,res)=>{
     try {
+        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {formname} = req.params;
         const formmodel = await FormModel.findOne({name:formname});
         if(!formmodel) return res.status(400).json({msg:"formmodel doesn't have dictdata ."});
@@ -49,6 +51,7 @@ export const Update = async(req,res)=>{
 
 export const GetAll = async(req,res)=>{
     try {
+        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const formmodellist = await FormModel.find().lean();
         // for (const num in formmodellist){
         //     formmodellist[num]['count']=await FormData.countDocuments({form:formmodellist[num]['_id']})
@@ -62,6 +65,7 @@ export const GetAll = async(req,res)=>{
 
 export const GetOne = async(req,res)=>{
     try {
+        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {formname} = req.params;
         const formmodel = await FormModel.findOne({name:formname}).lean();
         if(!formmodel) return res.status(400).json({msg:"formmodel doesn't have dictdata ."});
