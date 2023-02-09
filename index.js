@@ -15,7 +15,7 @@ import formmodelRoutes from "./routes/formmodels.js";
 import FormModel from "./models/FormModel.js";
 import ForData from "./models/FormData.js";
 import formdataRoutes from "./routes/formdatas.js";
-
+import googlesheetRoutes from "./routes/googlesheet.js";
 
 import User from "./models/User.js";
 // import {GetFormData} from "./data/index.js";
@@ -89,6 +89,7 @@ app.post('/uploads/images',MultipartyMiddleware,(req,res)=>{
 app.use("/auth",authRoutes);
 app.use("/users",userRoutes);
 app.use("/formdata",formdataRoutes);
+app.use("/googlesheet",googlesheetRoutes);
 
 // new
 app.use("/formmodel",formmodelRoutes)
@@ -116,17 +117,18 @@ mongoose.connect(process.env.MONGO_URL,{
 //             useUnifiedTopology:true,
 //         })
 //         const formdata =  await GetFormData()
-//         var templist = []
-//         for (const num in formdata){
-//             templist.push(formdata[num])
-//             if (templist.length >990){
-//                 ForData.insertMany(templist)
-//                 templist = []
-//             }
-//         }
-//         if (templist.length>0){
-//             ForData.insertMany(templist)
-//         }
+//         console.log('formdata length',formdata.length)
+//         // var templist = []
+//         // for (const num in formdata){
+//         //     templist.push(formdata[num])
+//         //     if (templist.length >990){
+//         //         ForData.insertMany(templist)
+//         //         templist = []
+//         //     }
+//         // }
+//         // if (templist.length>0){
+//         //     ForData.insertMany(templist)
+//         // }
         
 
 //         console.log(`Server Port: ${PORT}`);
