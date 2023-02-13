@@ -65,7 +65,6 @@ export const CreateComment = async(req,res)=>{
         await form.save()
         // const formlist = await FormData.find().lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         const returnform = await FormData.findOne({_id:id}).lean().populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
-        console.log('returnform',returnform)
         res.status(201).json(returnform)
     } catch (error) {
         res.status(404).json({error:error.message})

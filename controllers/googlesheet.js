@@ -26,7 +26,6 @@ export const GetAllList = async(req,res)=>{
     try {
         res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` );
         const Alllist = await GoogleSheet.find().lean();
-        console.log('alllist',Alllist);
         res.status(201).json(Alllist);
     } catch (error) {
         res.status(404).json({error:error.message})
@@ -62,7 +61,13 @@ export const DetectData = async(req,res)=>{
     try {
         res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` );
         const {docID,sheetID} = req.params;
-        const tempsheet = await GoogleSheet.find({docID:docID});
+        // const tempsheet = await GoogleSheet.find({docID:docID});
+        try{
+            var tempsheet = await GoogleSheet.find({docID:docID});
+        }catch(error){
+            console.log('error',error)
+            var tempsheet = []
+        }
         
         const doc = new GoogleSpreadsheet(docID);
         await doc.useServiceAccountAuth(JSON.parse(process.env.GOOGLE_SHEET_CRED));
@@ -85,7 +90,6 @@ export const SaveData = async(req,res)=>{
         await doc.useServiceAccountAuth(JSON.parse(process.env.GOOGLE_SHEET_CRED));
         await doc.loadInfo();
         const {name} = req.body;
-        console.log('success map')
         const newGoogleSheet = new GoogleSheet({
             name,
             docID
