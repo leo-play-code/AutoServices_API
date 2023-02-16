@@ -29,6 +29,19 @@ const FormDataSchema = new mongoose.Schema(
                     default: Date.now
                 }
             }
+        ],
+        history:[
+            {
+                user: String,
+                data:{
+                    type:{},
+                    default:{}
+                },
+                updateTime:{
+                    type:Date,
+                    default:Date.now
+                }
+            }
         ]
     },
     {timestamps:true}

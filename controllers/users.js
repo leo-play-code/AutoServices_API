@@ -28,7 +28,7 @@ export const GetAll = async(req,res)=>{
     try {
         res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         // const UserList = await User.find({allow:true}).sort({name:'asc'});
-        const UserList = await User.find().sort({name:'asc'}).lean();
+        const UserList = await User.find().sort({name:'asc'}).select(["Name","picturePath"]).lean();
         res.status(201).json(UserList)
     } catch (error) {
         res.status(404).json({error:error.message})   

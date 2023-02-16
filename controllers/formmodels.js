@@ -53,9 +53,22 @@ export const GetAll = async(req,res)=>{
     try {
         res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const formmodellist = await FormModel.find().lean();
-        // for (const num in formmodellist){
-        //     formmodellist[num]['count']=await FormData.countDocuments({form:formmodellist[num]['_id']})
-        // }
+  
+        for (const num in formmodellist){
+            const {_id} = formmodellist[num];
+            const number = await FormData.aggregate().group({ _id:_id, countOfChildrenPerParent: { $sum: 1 } }).exec()
+
+            if (number.length<1){
+                formmodellist[num]['number'] = 0;
+            }else{
+                formmodellist[num]['number'] = number[0]['countOfChildrenPerParent'];
+            }
+        }
+
+
+
+        
+        
         res.status(200).json(formmodellist);
     } catch (error) {
         res.status(404).json({error:error.message})

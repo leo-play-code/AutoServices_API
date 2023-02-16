@@ -19,6 +19,7 @@ import googlesheetRoutes from "./routes/googlesheet.js";
 
 import User from "./models/User.js";
 // import {GetFormData} from "./data/index.js";
+import { formmodel } from "./data/index.js";
 
 // image upload ckeditor
 import  multiparty  from 'connect-multiparty';
@@ -105,6 +106,7 @@ mongoose.connect(process.env.MONGO_URL,{
     app.listen(PORT,() => console.log(`Server Port: ${PORT}`));
 
     /* ADD DATA ONE TIME */
+    // FormModel.insertMany(formmodel);
     // User.insertMany(users);
     // Post.insertMany(posts);
 }).catch((error) => console.log(`${error} did not connect`))

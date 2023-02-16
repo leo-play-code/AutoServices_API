@@ -31,8 +31,8 @@ export const register = async(req,res)=>{
             picturePath
         });
 
-        const savedUser = newUser.save();
-        const token = ((savedUser.allow==true)?(jwt.sign({id:savedUser._id},process.env.JWT_SECRET)):null)
+        const savedUser = await newUser.save();
+        const token = await ((savedUser.allow==true)?(jwt.sign({id:savedUser._id},process.env.JWT_SECRET)):null)
         res.status(200).json({token,savedUser});
         
     } catch (error) {
