@@ -126,9 +126,9 @@ export const GetOne = async(req,res)=>{
 export const GetFormModelPart = async(req,res) =>{
     try {
         res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
-        const {formid,skip,limit} = req.params;
-        const form = await FormModel.findOne({_id:formid});
-        const myformlist = await FormData.find({form:form}).lean().sort([['createdAt', -1]]).skip(skip).limit(limit).populate({path:"history"}).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        const {skip,limit} = req.params;
+
+        const myformlist = await FormData.find().lean().sort([['createdAt', -1]]).skip(skip).limit(limit).populate({path:"history"}).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         res.status(201).json(myformlist)
     } catch (error) {
         console.log('error',error.message)
