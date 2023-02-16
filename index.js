@@ -69,8 +69,8 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname));
 // url 可以用static 內圖片的路徑來顯示圖片
 app.post('/uploads/images',MultipartyMiddleware,(req,res)=>{
-    res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
-    // res.setHeader("Access-Control-Allow-Origin",'https://autoservices.onrender.com' )
+    res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+    // res.set("Access-Control-Allow-Origin",'https://autoservices.onrender.com' )
     // console.log(req.files.upload.path);
     const imagePath = req.files.upload.path;
     // console.log('req.file.upload',req.files.upload)

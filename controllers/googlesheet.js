@@ -4,7 +4,7 @@ import GoogleSheet from '../models/GoogleSheet.js';
 
 export const GetData = async(req,res) =>{
     try{
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` );
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` );
         const {docID,sheetID} = req.params;
         const doc = new GoogleSpreadsheet(docID);
         await doc.useServiceAccountAuth(JSON.parse(process.env.GOOGLE_SHEET_CRED));
@@ -24,7 +24,7 @@ export const GetData = async(req,res) =>{
 
 export const GetAllList = async(req,res)=>{
     try {
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` );
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` );
         const Alllist = await GoogleSheet.find().lean();
         res.status(201).json(Alllist);
     } catch (error) {
@@ -35,7 +35,7 @@ export const GetAllList = async(req,res)=>{
 
 export const GetSheetMap = async(req,res)=>{
     try {
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` );
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` );
         const {sheetID} = req.params;
         const googlesheet = await GoogleSheet.findOne({_id:sheetID})
         const doc = new GoogleSpreadsheet(googlesheet['docID']);
@@ -59,7 +59,7 @@ export const GetSheetMap = async(req,res)=>{
 
 export const DetectData = async(req,res)=>{
     try {
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` );
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` );
         const {docID,sheetID} = req.params;
         // const tempsheet = await GoogleSheet.find({docID:docID});
         try{
@@ -84,7 +84,7 @@ export const DetectData = async(req,res)=>{
 
 export const SaveData = async(req,res)=>{
     try {
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` );
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` );
         const {docID,sheetID} = req.params;
         const doc = new GoogleSpreadsheet(docID);
         await doc.useServiceAccountAuth(JSON.parse(process.env.GOOGLE_SHEET_CRED));

@@ -5,7 +5,7 @@ import User from "../models/User.js";
 
 export const Create = async(req,res)=>{
     try {
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {userid,formmodelid} = req.params;
         const data = req.body;
         const form = formmodelid;
@@ -27,7 +27,7 @@ export const Create = async(req,res)=>{
 
 export const Delete = async(req,res)=>{
     try {
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {id} = req.params;
         const formdata = await FormData.findOne({_id:id});
         await formdata.delete();
@@ -40,7 +40,7 @@ export const Delete = async(req,res)=>{
 
 export const Update = async(req,res)=>{
     try { 
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {userid,formdataid} = req.params;
         const data = req.body;
         const formdata = await FormData.findOne({_id:formdataid});
@@ -76,7 +76,7 @@ export const Update = async(req,res)=>{
 
 export const CreateComment = async(req,res)=>{
     try {
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {id} = req.params;
         const data = req.body;
         const form = await FormData.findOne({_id:id});
@@ -95,7 +95,7 @@ export const CreateComment = async(req,res)=>{
 
 export const UpdateComment = async(req,res)=>{
     try {
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {id} = req.params;
         const data = req.body;
         const form = await FormData.findOne({_id:id});
@@ -114,7 +114,7 @@ export const UpdateComment = async(req,res)=>{
 
 export const GetOne = async(req,res)=>{
     try {
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {id} = req.params;
         const formdata = await FormData.findOne({_id:id});
         res.status(201).json(formdata);
@@ -125,7 +125,7 @@ export const GetOne = async(req,res)=>{
 
 export const GetFormModelPart = async(req,res) =>{
     try {
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {formid,skip,limit} = req.params;
         const form = await FormModel.findOne({_id:formid});
         const myformlist = await FormData.find({form:form}).lean().sort([['createdAt', -1]]).skip(skip).limit(limit).populate({path:"history"}).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
@@ -139,7 +139,7 @@ export const GetFormModelPart = async(req,res) =>{
 
 export const GetAll = async(req,res)=>{
     try {
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         // const formall = await FormData.find()
         const formlist = await FormData.find().lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         res.status(201).json(formlist)
@@ -149,7 +149,7 @@ export const GetAll = async(req,res)=>{
 }
 export const GetFormModelAll = async(req,res)=>{
     try {
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {formid} = req.params;
         const form = await FormModel.findOne({_id:formid});
         const myformlist = await FormData.find({form:form}).lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
@@ -161,7 +161,7 @@ export const GetFormModelAll = async(req,res)=>{
 }
 export const GetUserAll = async(req,res)=>{
     try {
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {userid} = req.params;
         const user = await User.findOne({_id:userid});
         const myformlist = await FormData.find({creator:user}).lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
@@ -174,7 +174,7 @@ export const GetUserAll = async(req,res)=>{
 
 export const GetFormDataCount = async(req,res)=>{
     try {
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {id} = req.params;
         const count = await FormData.countDocuments({form:id})
         res.status(201).json({"count":count})

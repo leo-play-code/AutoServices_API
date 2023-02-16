@@ -2,7 +2,7 @@ import User from "../models/User.js";
 
 export const GetOne = async(req,res)=>{
     try {
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {id} = req.params;
         const user = await User.findById(id).lean();
         res.status(200).json(user)
@@ -13,7 +13,7 @@ export const GetOne = async(req,res)=>{
 
 export const UpdateSetting = async(req,res)=>{
     try {
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {id} = req.params;
         const user = await User.findById(id).lean();
         user.setting = req.body;
@@ -26,7 +26,7 @@ export const UpdateSetting = async(req,res)=>{
 
 export const GetAll = async(req,res)=>{
     try {
-        res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         // const UserList = await User.find({allow:true}).sort({name:'asc'});
         const UserList = await User.find().sort({name:'asc'}).select(["Name","picturePath"]).lean();
         res.status(201).json(UserList)
