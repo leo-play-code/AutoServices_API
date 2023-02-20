@@ -41,7 +41,6 @@ export const Update = async(req,res)=>{
         if(!formmodel) return res.status(400).json({msg:"formmodel doesn't have dictdata ."});
         formmodel.selectdata = req.body['selectdata']
         formmodel.schema = req.body['schema']
-        formmodel.number = req.body['number']
         formmodel.save();
         res.status(200).json(formmodel)
     } catch (error) {

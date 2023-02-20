@@ -8,7 +8,7 @@ export const login = async(req,res) =>{
         const {email} = req.body;
         const user = await User.findOne({email:email})
         if (!user) return res.status(400).json({msg:"User does have permission. "});
-        const token = ((user.allow==true)?(jwt.sign({id:user._id},process.env.JWT_SECRET)):null)
+        const token = await ((user.allow==true)?(jwt.sign({id:user._id},process.env.JWT_SECRET)):null)
         res.status(200).json({token,user});
     } catch (error) {
         res.status(500).json({error:error.message+'test'});

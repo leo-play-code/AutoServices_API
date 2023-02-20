@@ -15,10 +15,6 @@ const FormSchema = new mongoose.Schema(
             type:{},
             default:{}
         },
-        number:{
-            type:Number,
-            default:0
-        }
     },
     {timestamps:true}
 )
