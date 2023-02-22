@@ -25,22 +25,7 @@ const UserSchema = new mongoose.Schema(
         },
         setting:{
             type:{},
-            default:{
-                "貼文顯示方式":{
-                    "Buglist":{
-                        "status":true,
-                        "system":true,
-                        "time":true,
-                        "tester":true,
-                        "testcasename":true,
-                        "chinesedescription":true,
-                        "title":true,
-                        "systeminformation":true,
-                        "description":true,
-                        "informationlink":true,
-                    }
-                }
-            }
+            default:{}
         }
 
     },
