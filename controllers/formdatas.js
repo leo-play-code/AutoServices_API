@@ -141,20 +141,27 @@ export const GetAll = async(req,res)=>{
     try {
         res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {time} = req.params;
-        // console.log(typeof time,time)
-        // const formall = await FormData.find()
+        const startTime = new Date().getTime();
+        // Stop the timer
+        
+
+  
         if (parseInt(time)===0){
             var formlist = await FormData.find().lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         }else{
             var formlist = await FormData.find({updatedAt: { $gt: parseInt(time) }}).lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         }
-        
         if (formlist.length < 1){
-                formlist = 0
+            formlist = 0
         }
+        
         const MapData = new Map();
         MapData.set('data',formlist)
         const myObj = Object.fromEntries(MapData);
+        const endTime = new Date().getTime();
+        // Calculate the elapsed time in milliseconds
+        const elapsedTime = endTime - startTime;
+        console.log('time between all',elapsedTime)
         res.status(201).json(myObj)
     } catch (error) {
         res.status(404).json({error:error.message})
