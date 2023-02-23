@@ -143,32 +143,32 @@ export const GetAll = async(req,res)=>{
         const or_formlist = req.body;
         // console.log('or_formlist',or_formlist);
         // const formall = await FormData.find()
-        const sendformlist = [];
+        // const sendformlist = [];
         const formlist = await FormData.find().lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
-        for (const item in formlist){
-            const {_id,comments,data} = formlist[item]
-            if (or_formlist[_id.toString()]===undefined){
-                sendformlist.push(formlist[item])
-            }else{
-                const {or_data,or_comments} = or_formlist[_id.toString()]
-                var bool = false
-                if (or_comments.length!==comments.length){
-                    bool =true
-                }else{
-                    for (const item in or_data){
-                        if (or_data[item]!==data[item]){
-                            bool = true
-                            break
-                        }
-                    }
-                }
-                if (bool === true){
-                    sendformlist.push(formlist[item])
-                }
-            }
-        }
+        // for (const item in formlist){
+        //     const {_id,comments,data} = formlist[item]
+        //     if (or_formlist[_id.toString()]===undefined){
+        //         sendformlist.push(formlist[item])
+        //     }else{
+        //         const {or_data,or_comments} = or_formlist[_id.toString()]
+        //         var bool = false
+        //         if (or_comments.length!==comments.length){
+        //             bool =true
+        //         }else{
+        //             for (const item in or_data){
+        //                 if (or_data[item]!==data[item]){
+        //                     bool = true
+        //                     break
+        //                 }
+        //             }
+        //         }
+        //         if (bool === true){
+        //             sendformlist.push(formlist[item])
+        //         }
+        //     }
+        // }
         // console.log('formlist',sendformlist)
-        res.status(201).json(sendformlist)
+        res.status(201).json(formlist)
     } catch (error) {
         res.status(404).json({error:error.message})
     }
