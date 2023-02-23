@@ -149,10 +149,13 @@ export const GetAll = async(req,res)=>{
             var formlist = await FormData.find({updatedAt: { $gt: parseInt(time) }}).lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         }
         
-       if (formlist.length < 1){
-            formlist = 0
-       }
-        res.status(201).json(formlist)
+        if (formlist.length < 1){
+                formlist = 0
+        }
+        const MapData = new Map();
+        MapData.set('data',formlist)
+        const myObj = Object.fromEntries(MapData);
+        res.status(201).json(myObj)
     } catch (error) {
         res.status(404).json({error:error.message})
     }
