@@ -140,8 +140,16 @@ export const GetFormModelPart = async(req,res) =>{
 export const GetAll = async(req,res)=>{
     try {
         res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        const {time} = req.params;
+        // console.log(typeof time,time)
         // const formall = await FormData.find()
-        const formlist = await FormData.find().lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        if (parseInt(time)===0){
+            var formlist = await FormData.find().lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        }else{
+            var formlist = await FormData.find({updatedAt: { $gt: parseInt(time) }}).lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        }
+        
+        console.log(formlist)
         res.status(201).json(formlist)
     } catch (error) {
         res.status(404).json({error:error.message})
