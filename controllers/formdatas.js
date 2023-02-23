@@ -149,7 +149,7 @@ export const GetAll = async(req,res)=>{
             var formlist = await FormData.find({updatedAt: { $gt: parseInt(time) }}).lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         }
         
-        console.log(formlist)
+        // console.log(formlist)
         res.status(201).json(formlist)
     } catch (error) {
         res.status(404).json({error:error.message})
