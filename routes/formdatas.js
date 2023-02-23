@@ -10,14 +10,14 @@ import {
     GetUserAll,
     UpdateComment,
     GetFormDataCount,
-    GetFormModelPart
+    GetFormModelPart,
     
 } from "../controllers/formdatas.js"
 import { verifyToken } from '../middleware/auth.js';
 
 
 const router = express.Router();
-router.get("/GetAll",verifyToken,GetAll);
+router.post("/GetAll",verifyToken,GetAll);
 router.get("/GetFormModelAll/:formid",verifyToken,GetFormModelAll);
 router.get("/GetOne/:id",verifyToken,GetOne);
 router.get("/GetUserAll/:userid",verifyToken,GetUserAll);
@@ -32,6 +32,8 @@ router.patch("/Create/:userid/:formmodelid",verifyToken,Create);
 router.patch("/Update/:userid/:formdataid",verifyToken,Update);
 
 router.delete("/Delete/:id",verifyToken,Delete);
+
+
 
 
 
