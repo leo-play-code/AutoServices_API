@@ -140,7 +140,7 @@ export const GetFormModelPart = async(req,res) =>{
 export const GetAll = async(req,res)=>{
     try {
         res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
-        const or_formlist = req.body;
+        // const or_formlist = req.body;
         // console.log('or_formlist',or_formlist);
         // const formall = await FormData.find()
         // const sendformlist = [];
