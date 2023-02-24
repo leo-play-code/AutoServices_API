@@ -26,6 +26,9 @@ const UserSchema = new mongoose.Schema(
         setting:{
             type:{},
             default:{}
+        },
+        account:{
+            type:String
         }
 
     },

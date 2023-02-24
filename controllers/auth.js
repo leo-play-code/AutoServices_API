@@ -7,7 +7,8 @@ export const login = async(req,res) =>{
         res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {email} = req.body;
         const user = await User.findOne({email:email})
-        if (!user) return res.status(400).json({msg:"User does have permission. "});
+        if (!user) return res.status(400).json({error:"User does't exist. "});
+        if (user.allow===false) return res.status(201).json({msg:"Not Allow"});
         const token = await ((user.allow==true)?(jwt.sign({id:user._id},process.env.JWT_SECRET)):null)
         res.status(200).json({token,user});
     } catch (error) {
@@ -28,7 +29,8 @@ export const register = async(req,res)=>{
         const newUser = new User({
             Name,
             email,
-            picturePath
+            picturePath,
+            password
         });
 
         const savedUser = await newUser.save();

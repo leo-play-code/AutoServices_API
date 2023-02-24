@@ -1,6 +1,6 @@
 import FormData from "../models/FormData.js";
 import FormModel from "../models/FormModel.js";
-
+import Form from "../models/Form.js";
 
 
 
@@ -51,8 +51,13 @@ export const Update = async(req,res)=>{
 export const GetAll = async(req,res)=>{
     try {
         res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
-        const formmodellist = await FormModel.find().lean();
-  
+
+        // Stop the timer
+        const formmodellist = await FormModel.find().lean()
+
+        
+
+
         for (const num in formmodellist){
             const {_id} = formmodellist[num];
             const number = await FormData.aggregate().group({ _id:_id, countOfChildrenPerParent: { $sum: 1 } }).exec()
@@ -64,7 +69,7 @@ export const GetAll = async(req,res)=>{
             }
         }
 
-
+        console.log(formmodellist)
 
         
         

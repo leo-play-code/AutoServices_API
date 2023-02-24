@@ -11,6 +11,7 @@ import {
     UpdateComment,
     GetFormDataCount,
     GetFormModelPart,
+    temp
     
 } from "../controllers/formdatas.js"
 import { verifyToken } from '../middleware/auth.js';
@@ -34,7 +35,7 @@ router.patch("/Update/:userid/:formdataid",verifyToken,Update);
 router.delete("/Delete/:id",verifyToken,Delete);
 
 
-
+router.get("/temp",verifyToken,temp);
 
 
 

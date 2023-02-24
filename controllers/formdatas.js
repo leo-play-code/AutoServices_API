@@ -2,7 +2,11 @@ import FormData from "../models/FormData.js";
 import FormModel from "../models/FormModel.js";
 import User from "../models/User.js";
 
+import Form from "../models/Form.js";
 
+  
+
+  
 export const Create = async(req,res)=>{
     try {
         res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
@@ -126,9 +130,14 @@ export const GetOne = async(req,res)=>{
 export const GetFormModelPart = async(req,res) =>{
     try {
         res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        const startTime = new Date().getTime();
         const {skip,limit} = req.params;
 
         const myformlist = await FormData.find().lean().sort([['createdAt', -1]]).skip(skip).limit(limit).populate({path:"history"}).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        const endTime = new Date().getTime();
+        // Calculate the elapsed time in milliseconds
+        const elapsedTime = endTime - startTime;
+        console.log('time between part',elapsedTime)
         res.status(201).json(myformlist)
     } catch (error) {
         console.log('error',error.message)
@@ -137,19 +146,23 @@ export const GetFormModelPart = async(req,res) =>{
 }
 
 
+
+
 export const GetAll = async(req,res)=>{
     try {
         res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {time} = req.params;
         const startTime = new Date().getTime();
         // Stop the timer
-        
+
 
   
         if (parseInt(time)===0){
-            var formlist = await FormData.find().lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+            var formlist = await FormData.find().lean().sort([['createdAt', -1]]).skip(0).limit(2500).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         }else{
             var formlist = await FormData.find({updatedAt: { $gt: parseInt(time) }}).lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+
+            // var formlist = await FormData.aggregate(pipeline);
         }
         if (formlist.length < 1){
             formlist = 0
@@ -205,15 +218,45 @@ export const GetFormDataCount = async(req,res)=>{
 
 
 
-// export const temp = async(req,res)=>{
-//     try {
-//         // const filterDate = new Date('2022-01-21');
-//         res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
-//         const formdatas = await FormData.updateMany({ "data.status": "#2ECC71" }, { $set: { "data.status": "#145A32" } })
-//         // console.log('formdatas',formdatas)
-//         // console.log('formlength',formdatas.length)
-//         res.status(201).json({"pass":"pass"});
-//     } catch (error) {
-//         res.status(404).json({error:error.message})
-//     }
-// }
+export const temp = async(req,res)=>{
+    try {
+        // const filterDate = new Date('2022-01-21');
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        const Formmodel = await FormModel.findOne({name:"Buglist"})
+        const FormDatas = await FormData.find().lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        
+        const name = Formmodel.name;
+        const selectdata = Formmodel.selectdata;
+        const schema = Formmodel.schema;
+        const newForm = new Form({
+            name,
+            selectdata,
+            schema,
+        });
+        await newForm.save();
+        const tempdata_list = []
+        for (const item in FormDatas){
+            const {creator,data,comments,history} = FormDatas[item];
+            tempdata_list.push({
+                'creator':creator['_id'],
+                'data':data,
+                'comments':comments,
+                'history':history
+            })
+            // await newForm.save();
+        }
+        newForm.datalist = tempdata_list;
+        await newForm.save()
+        const buffer = Buffer.from([newForm]);
+
+        const sizeInBytes = Buffer.byteLength(buffer);
+        const sizeInKB = sizeInBytes / 1024;
+
+        console.log(sizeInKB); // Output: 0.0126953125
+        
+        console.log('formdatas',newForm)
+        res.status(201).json({"pass":"pass"});
+    } catch (error) {
+        res.status(404).json({error:error.message})
+    }
+}
