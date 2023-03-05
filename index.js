@@ -16,13 +16,14 @@ import FormModel from "./models/FormModel.js";
 import ForData from "./models/FormData.js";
 import formdataRoutes from "./routes/formdatas.js";
 import googlesheetRoutes from "./routes/googlesheet.js";
-
-// import User from "./models/User.js";
+import bcrypt from "bcrypt";
+import User from "./models/User.js";
 // import {GetFormData} from "./data/index.js";
 // import { formmodel } from "./data/index.js";
 
 // image upload ckeditor
 import  multiparty  from 'connect-multiparty';
+
 
 
 /* CONFIGURATIONS */
@@ -104,6 +105,8 @@ mongoose.connect(process.env.MONGO_URL,{
     useUnifiedTopology:true,
 }).then(()=>{
     app.listen(PORT,() => console.log(`Server Port: ${PORT}`));
+    // updateUsers()
+
 
     /* ADD DATA ONE TIME */
     // FormModel.insertMany(formmodel);

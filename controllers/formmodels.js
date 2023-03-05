@@ -69,7 +69,6 @@ export const GetAll = async(req,res)=>{
             }
         }
 
-        console.log(formmodellist)
 
         
         

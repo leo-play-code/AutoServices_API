@@ -1,13 +1,18 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import { sendVerfiyMail } from "../middleware/mail.js";
 
 /* LOGGING IN */
 export const login = async(req,res) =>{
     try {
         res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
-        const {email} = req.body;
+        const {email,password} = req.body;
         const user = await User.findOne({email:email})
         if (!user) return res.status(400).json({error:"User does't exist. "});
+        const isMatch = await user.comparePassword(password);
+        if (!isMatch){
+            return res.status(201).json({msg:"輸入密碼錯誤"});
+        }
         if (user.allow===false) return res.status(201).json({msg:"Not Allow"});
         const token = await ((user.allow==true)?(jwt.sign({id:user._id},process.env.JWT_SECRET)):null)
         res.status(200).json({token,user});
@@ -23,7 +28,8 @@ export const register = async(req,res)=>{
         const {
             Name,
             email,
-            picturePath
+            picturePath,
+            password
         } = req.body;
 
         const newUser = new User({
@@ -39,6 +45,50 @@ export const register = async(req,res)=>{
         
     } catch (error) {
         res.status(500).json({error:error.message});
+    }
+}
+function generateRandomNumber() {
+    var data = Math.floor(Math.random() * 900000) + 100000;
+    data = data.toString()
+    return data
+}
+  
+
+
+  
+
+
+export const sendVerifyNumber = async(req,res)=>{
+    try {
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` );
+        const {email} = req.params;
+        const user = await User.findOne({email:email});
+        const {htmlbody} = req.body;
+        if (!user) return res.status(400).json({error:"User does't exist. "});
+        const mailOptions = {
+            from: 'ddmtestanswer@gmail.com',
+            to: 'leo56029132@gmail.com',
+            subject: 'Test email',
+            html: htmlbody
+        };
+        sendVerfiyMail(mailOptions)
+        res.status(200).json({"verifynumber":""})
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
+}
+
+export const resetpassword = async(req,res)=>{
+    try {
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        const {account,password } = req.body;
+        const user = await User.findOne({email:account});
+        if (!user) return res.status(400).json({error:"User does't exist. "});
+        user.password = password;
+        await user.save();
+        res.status(200).json({"msg":"重置密碼成功"})
+    } catch (error) {
+        res.status(500).json({error:error.message})
     }
 }
 
