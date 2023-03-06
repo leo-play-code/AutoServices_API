@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
-import { sendVerfiyMail } from "../middleware/mail.js";
+import { sendVerfiyMail } from "../index.js";
 
 /* LOGGING IN */
 export const login = async(req,res) =>{
@@ -91,5 +91,4 @@ export const resetpassword = async(req,res)=>{
         res.status(500).json({error:error.message})
     }
 }
-
 

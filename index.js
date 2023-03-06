@@ -18,6 +18,7 @@ import formdataRoutes from "./routes/formdatas.js";
 import googlesheetRoutes from "./routes/googlesheet.js";
 import bcrypt from "bcrypt";
 import User from "./models/User.js";
+import nodemailer from 'nodemailer';
 // import {GetFormData} from "./data/index.js";
 // import { formmodel } from "./data/index.js";
 
@@ -87,6 +88,7 @@ app.post('/uploads/images',MultipartyMiddleware,(req,res)=>{
 // app.post("/posts",verifyToken,upload.single("picture"),createPost);
 
 
+
 /* ROUTES */
 app.use("/auth",authRoutes);
 app.use("/users",userRoutes);
@@ -95,6 +97,35 @@ app.use("/googlesheet",googlesheetRoutes);
 
 // new
 app.use("/formmodel",formmodelRoutes)
+
+// mail 
+const mail = process.env.MAIL_ACCOUNT
+const pass = process.env.MAIL_PASSWORD
+
+console.log('pass',mail,pass)
+
+export const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+        user: mail,
+        pass: pass
+    }
+});
+
+
+export const sendVerfiyMail = (mailOptions)=>{
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log('Error sending email:', error);
+        } else {
+            console.log('Email sent:', info.response);
+        }
+    });
+}
+
+
 
 /* MOGOOSE SETUP */
 const PORT = process.env.PORT || 6003;
