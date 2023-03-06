@@ -67,7 +67,7 @@ export const sendVerifyNumber = async(req,res)=>{
         if (!user) return res.status(400).json({error:"User does't exist. "});
         const mailOptions = {
             from: 'ddmtestanswer@gmail.com',
-            to: 'leo56029132@gmail.com',
+            to: email,
             subject: 'Test email',
             html: htmlbody
         };
