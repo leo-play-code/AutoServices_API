@@ -102,7 +102,6 @@ app.use("/formmodel",formmodelRoutes)
 const mail = process.env.MAIL_ACCOUNT
 const pass = process.env.MAIL_PASSWORD
 
-console.log('pass',mail,pass)
 
 export const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -154,17 +153,17 @@ mongoose.connect(process.env.MONGO_URL,{
 //         })
 //         const formdata =  await GetFormData()
 //         console.log('formdata length',formdata.length)
-//         var templist = []
-//         for (const num in formdata){
-//             templist.push(formdata[num])
-//             if (templist.length >990){
-//                 ForData.insertMany(templist)
-//                 templist = []
-//             }
-//         }
-//         if (templist.length>0){
-//             ForData.insertMany(templist)
-//         }
+//         // var templist = []
+//         // for (const num in formdata){
+//         //     templist.push(formdata[num])
+//         //     if (templist.length >990){
+//         //         ForData.insertMany(templist)
+//         //         templist = []
+//         //     }
+//         // }
+//         // if (templist.length>0){
+//         //     ForData.insertMany(templist)
+//         // }
         
 
 //         console.log(`Server Port: ${PORT}`);

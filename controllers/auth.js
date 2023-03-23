@@ -31,7 +31,7 @@ export const register = async(req,res)=>{
             picturePath,
             password
         } = req.body;
-
+        console.log('req.body',req.body)
         const newUser = new User({
             Name,
             email,
