@@ -20,7 +20,7 @@ export const Create = async(req,res)=>{
             data
         });
         await newformdata.save();
-        const returnform = await FormData.findOne({_id:newformdata['_id']}).lean().populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        const returnform = await FormData.findOne({_id:newformdata['_id']}).lean().populate({path:"form",select:["name"]}).populate({path:"history"}).populate({path:"creator",select:["Name"]}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         res.status(201).json(returnform);
         // const formlist = await FormData.find().lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
 
@@ -70,8 +70,7 @@ export const Update = async(req,res)=>{
             formdata.history.push(history)
         }
         await formdata.save();
-        // const formlist = await FormData.find().lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
-        const returnform = await FormData.findOne({_id:formdataid}).lean().populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        const returnform = await FormData.findOne({_id:formdataid}).lean().populate({path:"form",select:["name"]}).populate({path:"history"}).populate({path:"creator",select:["Name"]}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         res.status(201).json(returnform)
     } catch (error) {
         res.status(404).json({error:error.message})
@@ -87,8 +86,7 @@ export const CreateComment = async(req,res)=>{
 
         form.comments.push(data);
         await form.save()
-        // const formlist = await FormData.find().lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
-        const returnform = await FormData.findOne({_id:id}).lean().populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        const returnform = await FormData.findOne({_id:id}).lean().populate({path:"form",select:["name"]}).populate({path:"history"}).populate({path:"creator",select:["Name"]}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         res.status(201).json(returnform)
     } catch (error) {
         res.status(404).json({error:error.message})
@@ -105,8 +103,7 @@ export const UpdateComment = async(req,res)=>{
         const form = await FormData.findOne({_id:id});
         form.comments = data;
         await form.save();
-        // const formlist = await FormData.find().lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
-        const returnform = await FormData.findOne({_id:id}).lean().populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        const returnform = await FormData.findOne({_id:id}).lean().populate({path:"form",select:["name"]}).populate({path:"history"}).populate({path:"creator",select:["Name"]}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         res.status(201).json(returnform);
     } catch (error) {
         res.status(404).json({error:error.message})   
@@ -133,7 +130,7 @@ export const GetFormModelPart = async(req,res) =>{
         const startTime = new Date().getTime();
         const {skip,limit} = req.params;
 
-        const myformlist = await FormData.find().lean().sort([['createdAt', -1]]).skip(skip).limit(limit).populate({path:"history"}).populate(["form","creator"]).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        const myformlist = await FormData.find().lean().sort([['createdAt', -1]]).skip(skip).limit(limit).populate({path:"form",select:["name"]}).populate({path:"history"}).populate({path:"creator",select:["Name"]}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         const endTime = new Date().getTime();
         // Calculate the elapsed time in milliseconds
         const elapsedTime = endTime - startTime;
@@ -157,17 +154,30 @@ export const GetAll = async(req,res)=>{
 
 
   
+        // if (parseInt(time)===0){
+        //     var formlist = await FormData.find().lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        // }else{
+        //     var formlist = await FormData.find({updatedAt: { $gt: parseInt(time) }}).lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+
+        //     // var formlist = await FormData.aggregate(pipeline);
+        // }
+        // if (formlist.length < 1){
+        //     formlist = 0
+        // }
+        
         if (parseInt(time)===0){
-            var formlist = await FormData.find().lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+            var formlist = await FormData.find().lean().sort([['createdAt', -1]]).populate({path:"form",select:["name"]}).populate({path:"history"}).populate({path:"creator",select:["Name"]}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         }else{
-            var formlist = await FormData.find({updatedAt: { $gt: parseInt(time) }}).lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+            var formlist = await FormData.find({updatedAt: { $gt: parseInt(time) }}).lean().sort([['createdAt', -1]]).populate({path:"form",select:["name"]}).populate({path:"history"}).populate({path:"creator",select:["Name"]}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
 
             // var formlist = await FormData.aggregate(pipeline);
         }
         if (formlist.length < 1){
             formlist = 0
         }
-        
+
+
+
         const MapData = new Map();
         MapData.set('data',formlist)
         const myObj = Object.fromEntries(MapData);
@@ -185,7 +195,7 @@ export const GetFormModelAll = async(req,res)=>{
         res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {formid} = req.params;
         const form = await FormModel.findOne({_id:formid});
-        const myformlist = await FormData.find({form:form}).lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        const myformlist = await FormData.find({form:form}).lean().sort([['createdAt', -1]]).populate({path:"form",select:["name"]}).populate({path:"history"}).populate({path:"creator",select:["Name"]}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         res.status(201).json(myformlist)
         
     } catch (error) {
@@ -197,7 +207,7 @@ export const GetUserAll = async(req,res)=>{
         res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {userid} = req.params;
         const user = await User.findOne({_id:userid});
-        const myformlist = await FormData.find({creator:user}).lean().sort([['createdAt', -1]]).populate(["form","creator"]).populate({path:"history"}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        const myformlist = await FormData.find({creator:user}).lean().sort([['createdAt', -1]]).populate({path:"form",select:["name"]}).populate({path:"history"}).populate({path:"creator",select:["Name"]}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
 
         res.status(201).json(myformlist)
     } catch (error) {
