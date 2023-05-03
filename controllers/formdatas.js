@@ -117,7 +117,7 @@ export const GetOne = async(req,res)=>{
     try {
         res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
         const {id} = req.params;
-        const formdata = await FormData.findOne({_id:id});
+        const formdata = await FormData.findOne({_id:id}).populate({path:"form",select:["name"]}).populate({path:"history"}).populate({path:"creator",select:["Name"]}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         res.status(201).json(formdata);
     } catch (error) {
         res.status(404).json({error:error.message})
@@ -142,7 +142,20 @@ export const GetFormModelPart = async(req,res) =>{
     }
 }
 
+export const GetNewFormData = async(req,res) =>{
+    try {
+        res.set("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}` )
+        const {skip,limit} = req.params;
+        const data = req.body;
+        console.log('skip=',skip,'limit=',limit,'filter=',data)
+        const myformlist = await FormData.find().lean().sort([['createdAt', -1]]).skip(skip).limit(limit).populate({path:"form",select:["name"]}).populate({path:"history"}).populate({path:"creator",select:["Name"]}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
 
+        res.status(201).json(myformlist)
+    } catch (error) {
+        console.log('error',error.message)
+        res.status(404).json({error:error.message})   
+    }
+}
 
 
 export const GetAll = async(req,res)=>{
@@ -169,8 +182,6 @@ export const GetAll = async(req,res)=>{
             var formlist = await FormData.find().lean().sort([['createdAt', -1]]).populate({path:"form",select:["name"]}).populate({path:"history"}).populate({path:"creator",select:["Name"]}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
         }else{
             var formlist = await FormData.find({updatedAt: { $gt: parseInt(time) }}).lean().sort([['createdAt', -1]]).populate({path:"form",select:["name"]}).populate({path:"history"}).populate({path:"creator",select:["Name"]}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
-
-            // var formlist = await FormData.aggregate(pipeline);
         }
         if (formlist.length < 1){
             formlist = 0
