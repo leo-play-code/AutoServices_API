@@ -148,7 +148,27 @@ export const GetNewFormData = async(req,res) =>{
         const {skip,limit} = req.params;
         const data = req.body;
         console.log('skip=',skip,'limit=',limit,'filter=',data)
-        const myformlist = await FormData.find().lean().sort([['createdAt', -1]]).skip(skip).limit(limit).populate({path:"form",select:["name"]}).populate({path:"history"}).populate({path:"creator",select:["Name"]}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
+        const query = {}
+        for (const item in data){
+            if (typeof data[item] === "number"){
+
+            }else{
+                if (data[item]!==''){
+                    console.log(item,data[item])
+                    const fieldName = item;
+                    const nestedFieldName = "data." + fieldName;
+                    query[nestedFieldName] = {$regex:data[item]}
+                }
+            }
+            
+        }
+        // const fieldName = "TCID";
+        // const nestedFieldName = "data." + fieldName;
+        // const querytest = { [nestedFieldName]: { $regex: "13123" } };
+
+        console.log('query',query)
+        // console.log('querytest',querytest)
+        const myformlist = await FormData.find(query).lean().sort([['createdAt', -1]]).skip(skip).limit(limit).populate({path:"form",select:["name"]}).populate({path:"history"}).populate({path:"creator",select:["Name"]}).populate({path:"comments",populate:{path:"user",select:["Name","picturePath"]}});
 
         res.status(201).json(myformlist)
     } catch (error) {
